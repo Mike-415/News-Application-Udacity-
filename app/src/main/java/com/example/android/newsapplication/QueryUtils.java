@@ -33,27 +33,20 @@ public final class QueryUtils {
      * Query the USGS dataset and return a list of {@link News} objects.
      */
     public static List<News> fetchNewsData(String requestUrl) {
-        // Create URL object
-
+        //Testing the loading indicator
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         URL url = createUrl(requestUrl);
-
-        // Perform HTTP request to the URL and receive a JSON response back
         String jsonResponse = null;
         try {
             jsonResponse = makeHttpRequest(url);
         } catch (IOException e) {
             Log.e(TAG, "Problem making the HTTP request.", e);
         }
-
-        // Extract relevant fields from the JSON response and create a list of {@link Earthquake}s
         List<News> newsList = extractNewsFromJson(jsonResponse);
-
-        // Return the list of {@link Earthquake}s
         return newsList;
     }
 
@@ -63,66 +56,24 @@ public final class QueryUtils {
      * Return a list of {@link News} objects that has been built up from
      * parsing the given JSON response.
      */
-    private static List<News> extractNewsFromJson(String earthquakeJSON) {
+    private static List<News> extractNewsFromJson(String newsJSON) {
         // If the JSON string is empty or null, then return early.
-        if (TextUtils.isEmpty(earthquakeJSON)) {
+        if (TextUtils.isEmpty(newsJSON)) {
             return null;
         }
-
-        // Create an empty ArrayList that we can start adding earthquakes to
         List<News> newsList = new ArrayList<>();
 
         // Try to parse the JSON response string. If there's a problem with the way the JSON
         // is formatted, a JSONException exception object will be thrown.
         // Catch the exception so the app doesn't crash, and print the error message to the logs.
         try {
-
-            // Create a JSONObject from the JSON response string
-            JSONObject baseJsonResponse = new JSONObject(earthquakeJSON);
-
-            // Extract the JSONArray associated with the key called "features",
-            // which represents a list of features (or earthquakes).
-            JSONArray earthquakeArray = baseJsonResponse.getJSONArray("features");
-
-            // For each earthquake in the earthquakeArray, create an {@link Earthquake} object
-            for (int i = 0; i < earthquakeArray.length(); i++) {
-
-                // Get a single earthquake at position i within the list of earthquakes
-                JSONObject currentEarthquake = earthquakeArray.getJSONObject(i);
-
-                // For a given earthquake, extract the JSONObject associated with the
-                // key called "properties", which represents a list of all properties
-                // for that earthquake.
-                JSONObject properties = currentEarthquake.getJSONObject("properties");
-
-                // Extract the value for the key called "mag"
-                double magnitude = properties.getDouble("mag");
-
-                // Extract the value for the key called "place"
-                String location = properties.getString("place");
-
-                // Extract the value for the key called "time"
-                long time = properties.getLong("time");
-
-                // Extract the value for the key called "url"
-                String url = properties.getString("url");
-
-                // Create a new {@link Earthquake} object with the magnitude, location, time,
-                // and url from the JSON response.
-
-                //News news = new News()
-
-                // Add the new {@link Earthquake} to the list of earthquakes.
-                //newsList.add(news);
-            }
-
+            newsList = parseJSON(newsJSON);
         } catch (JSONException e) {
             // If an error is thrown when executing any of the above statements in the "try" block,
             // catch the exception here, so the app doesn't crash. Print a log message
             // with the message from the exception.
-            Log.e("QueryUtils", "extractFeatureFromJson: Problem parsing the earthquake JSON results", e);
+            Log.e("QueryUtils", "Problem parsing the earthquake JSON results", e);
         }
-
         // Return the list of earthquakes
         return newsList;
     }
@@ -204,36 +155,30 @@ public final class QueryUtils {
     }
 
 
-    public static void parseJSON(String jsonString){
-        Log.d(TAG, "parseJSON: INSIDE parseJSON!!!!!!!!!!!!!!!!");
+    private static List<News> parseJSON(String jsonString) throws JSONException{
         List<News> newsList = new ArrayList<>();
-        try{
-            JSONObject root = new JSONObject(jsonString);
-            JSONObject response = root.getJSONObject("response");
-            JSONArray results = response.getJSONArray("results");
-            for(int i = 0; i < results.length(); i++) {
-                JSONObject result = results.getJSONObject(i);
-                String sectionName = result.getString("sectionName");
-                String title = result.getString("webTitle");
-                String date = result.getString("webPublicationDate");
+        JSONObject root = new JSONObject(jsonString);
+        JSONObject response = root.getJSONObject("response");
+        JSONArray results = response.getJSONArray("results");
+        for(int i = 0; i < results.length(); i++)
+        {
+            JSONObject result = results.getJSONObject(i);
+            String sectionName = result.getString("sectionName");
+            String title = result.getString("webTitle");
+            String date = result.getString("webPublicationDate");
 
-                JSONObject fields = result.getJSONObject("fields");
-                String thumbnailUrl = fields.getString("thumbnail");
+            JSONObject fields = result.getJSONObject("fields");
+            String thumbnailUrl = fields.getString("thumbnail");
 
-                JSONArray tags = result.getJSONArray("tags");
-                JSONObject tagObject = tags.getJSONObject(0);
-                String author = tagObject.getString("webTitle");
+            JSONArray tags = result.getJSONArray("tags");
+            JSONObject tagObject = tags.getJSONObject(0);
+            String author = tagObject.getString("webTitle");
 
-                Log.d(TAG, "parseJSON: sectionName: "+sectionName+" thumbnailUrl: "+thumbnailUrl);
-//                Log.i(TAG, "parseJSON:\n\t date: " + date + "\n\ttitle " + title + "\n\tsectionName: " + sectionName);
-                News news = new News(title, sectionName, date, author, thumbnailUrl);
-                Log.i(TAG, "news object: " + news);
-                newsList.add(news);
-            }
-
-        }catch (JSONException e){
-
+            News news = new News(title, sectionName, date, author, thumbnailUrl);
+            Log.i(TAG, "news object: " + news);
+            newsList.add(news);
         }
+        return newsList;
     }
 }
 
