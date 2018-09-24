@@ -5,7 +5,6 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,7 +14,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 
@@ -32,7 +30,7 @@ public final class QueryUtils {
 
 
     /**
-     * Query the USGS dataset and return a list of {@link Earthquake} objects.
+     * Query the USGS dataset and return a list of {@link News} objects.
      */
     public static List<News> fetchNewsData(String requestUrl) {
         // Create URL object
@@ -206,7 +204,7 @@ public final class QueryUtils {
     }
 
 
-    public static List<News> parseJSON(String jsonString){
+    public static void parseJSON(String jsonString){
         Log.d(TAG, "parseJSON: INSIDE parseJSON!!!!!!!!!!!!!!!!");
         List<News> newsList = new ArrayList<>();
         try{
@@ -215,17 +213,20 @@ public final class QueryUtils {
             JSONArray results = response.getJSONArray("results");
             for(int i = 0; i < results.length(); i++) {
                 JSONObject result = results.getJSONObject(i);
-
-                JSONObject fields = result.getJSONObject("fields");
-//                JSONArray references = result.getJSONArray("references");
-//                String author = (String) references.get(0); //NOT SURE IF THIS WORKS SINCE THERE ARE NO AUTHORS IN THE REFERENCE ARRAYS SO FAR
-                String thumbnailUrl = fields.getString("thumbnail");
                 String sectionName = result.getString("sectionName");
                 String title = result.getString("webTitle");
                 String date = result.getString("webPublicationDate");
+
+                JSONObject fields = result.getJSONObject("fields");
+                String thumbnailUrl = fields.getString("thumbnail");
+
+                JSONArray tags = result.getJSONArray("tags");
+                JSONObject tagObject = tags.getJSONObject(0);
+                String author = tagObject.getString("webTitle");
+
                 Log.d(TAG, "parseJSON: sectionName: "+sectionName+" thumbnailUrl: "+thumbnailUrl);
 //                Log.i(TAG, "parseJSON:\n\t date: " + date + "\n\ttitle " + title + "\n\tsectionName: " + sectionName);
-                News news = new News(title, sectionName, date, null, thumbnailUrl);
+                News news = new News(title, sectionName, date, author, thumbnailUrl);
                 Log.i(TAG, "news object: " + news);
                 newsList.add(news);
             }
@@ -233,7 +234,6 @@ public final class QueryUtils {
         }catch (JSONException e){
 
         }
-        return newsList;
     }
 }
 
