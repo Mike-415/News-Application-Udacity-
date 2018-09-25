@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         ButterKnife.bind(this);
         initializeRecyclerView(null);
         if(isInternetConnected()){
+            Log.d(TAG, "onCreate: internetIsConnected");
             getLoaderManager().initLoader(NEWS_LOADER_ID, null, MainActivity.this);
         }else{
             mLoadingIndicator.setVisibility(View.GONE);
@@ -57,7 +58,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(android.content.Loader<List<News>> loader, List<News> newsList) {
-        Log.d(TAG, "onLoadFinished: GOT THE LIST!!!! LIST SIZE: "+newsList.size());
         mLoadingIndicator.setVisibility(View.GONE);
         if(newsList != null && !newsList.isEmpty()){
             initializeRecyclerView(newsList);

@@ -123,6 +123,10 @@ public final class QueryUtils {
         return jsonResponse;
     }
 
+//    private static void getInternetConnection(HttpURLConnection urlConnection){
+//
+//    }
+
     /**
      * Convert the {@link InputStream} into a String which contains the
      * whole JSON response from the server.
@@ -163,22 +167,28 @@ public final class QueryUtils {
         for(int i = 0; i < results.length(); i++)
         {
             JSONObject result = results.getJSONObject(i);
-            String sectionName = result.getString("sectionName");
-            String title = result.getString("webTitle");
-            String date = result.getString("webPublicationDate");
-
-            JSONObject fields = result.getJSONObject("fields");
-            String thumbnailUrl = fields.getString("thumbnail");
-
-            JSONArray tags = result.getJSONArray("tags");
-            JSONObject tagObject = tags.getJSONObject(0);
-            String author = tagObject.getString("webTitle");
-
-            News news = new News(title, sectionName, date, author, thumbnailUrl);
-            Log.i(TAG, "news object: " + news);
+            News news = getNewsFromResult(result);
+            Log.i(TAG, "\nnews object: " + news + "\n");
             newsList.add(news);
         }
         return newsList;
+    }
+
+    private static News getNewsFromResult(JSONObject result) throws JSONException{
+        String sectionName, title, thumbnailUrl, author = null, date = null;
+        JSONObject fields = result.getJSONObject("fields");
+        sectionName = result.getString("sectionName");
+        title = result.getString("webTitle");
+        if(result.has("webPublicationDate")){
+            date = result.getString("webPublicationDate");
+        }
+        thumbnailUrl = fields.getString("thumbnail");
+        JSONArray tags = result.getJSONArray("tags");
+        if(tags.length() > 0){
+            JSONObject tagObject = tags.getJSONObject(0);
+            author = tagObject.getString("webTitle");
+        }
+        return new News(title, sectionName, date, author, thumbnailUrl);
     }
 }
 

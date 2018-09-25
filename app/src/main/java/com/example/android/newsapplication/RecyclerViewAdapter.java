@@ -9,10 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
-
 import java.util.List;
+
+
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
     private static final String TAG = "RecyclerViewAdapter";
@@ -32,19 +32,22 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return holder;
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         News news = mNewsList.get(i);
-        //TODO: Load image using Glide or Picasso
         ImageView thumbnail = viewHolder.thumbnail;
         Glide.with(mContext).load(news.getImageUrl()).into(thumbnail);
         viewHolder.sectionName.setText(news.getSection());
         viewHolder.headline.setText(news.getTitle());
         viewHolder.author.setText(news.getAuthor());
+        //TODO: Find a way to format the ISO-8610 date String
+        //TODO: If there is no image or author, replace with default image or remove textview
         viewHolder.dateAndTime.setText(news.getDate());
         viewHolder.parentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //TODO: Put this onClickListener in the MainActivity with the RecyclerView
                 //TODO: Create another field in the News class for the Guardian URL
                 //TODO: Create an intent for the Guardian URL
             }
@@ -68,8 +71,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             headline = itemView.findViewById(R.id.headline);
             author = itemView.findViewById(R.id.author);
             dateAndTime = itemView.findViewById(R.id.dateAndTime);
-
-
         }
     }
 }
