@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
@@ -33,9 +35,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         News news = mNewsList.get(i);
-        //We can use Picasso and Butterknife, just as long as it has nothing to do with networking
         //TODO: Load image using Glide or Picasso
-        viewHolder.thumbnail.setImageResource(R.drawable.ic_launcher_foreground);
+        ImageView thumbnail = viewHolder.thumbnail;
+        Glide.with(mContext).load(news.getImageUrl()).into(thumbnail);
         viewHolder.sectionName.setText(news.getSection());
         viewHolder.headline.setText(news.getTitle());
         viewHolder.author.setText(news.getAuthor());
