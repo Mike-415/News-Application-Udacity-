@@ -174,13 +174,14 @@ public final class QueryUtils {
         return newsList;
     }
 
+
     private static News getNewsFromResult(JSONObject result) throws JSONException{
-        String sectionName, title, thumbnailUrl, author = null, date = null;
+        String sectionName, title, thumbnailUrl, guardianUrl, author = null, date = null;
         JSONObject fields = result.getJSONObject("fields");
         sectionName = result.getString("sectionName");
         title = result.getString("webTitle");
         if(result.has("webPublicationDate")){
-            date = result.getString("webPublicationDate");
+            date = formatDateAndTime(result.getString("webPublicationDate"));
         }
         thumbnailUrl = fields.getString("thumbnail");
         JSONArray tags = result.getJSONArray("tags");
@@ -188,7 +189,89 @@ public final class QueryUtils {
             JSONObject tagObject = tags.getJSONObject(0);
             author = tagObject.getString("webTitle");
         }
-        return new News(title, sectionName, date, author, thumbnailUrl);
+        guardianUrl = result.getString("webUrl");
+        return new News(title, sectionName, date, author, thumbnailUrl, guardianUrl);
     }
+
+    private static String formatDateAndTime(String publicationDate){
+        String[] dateAndTime = publicationDate.split("T");
+        String formattedDate = formatDate(dateAndTime[0]);
+        String formattedTime = formatTime(dateAndTime[1]);
+        return formattedDate+"\n"+formattedTime;
+    }
+
+
+
+    private static String formatDate(String date){
+        String[] dateUnits = date.split("-");
+        String year = dateUnits[0];
+        String month = getMonthString(Integer.valueOf(dateUnits[1]));
+        String day = dateUnits[2];
+        return (new StringBuilder(month)
+                .append(" ")
+                .append(day)
+                .append(", ")
+                .append(year)).toString();
+    }
+
+    private static String formatTime(String time) {
+        String[] timeUnits = time.split(":");
+        int hour = Integer.valueOf(timeUnits[0]);
+        int minute = Integer.valueOf(timeUnits[1]);
+        StringBuilder builder = new StringBuilder();
+        if(hour > 12){
+            hour -= 12;
+            return (builder.append(hour).append(":").append(minute).append(" PM")).toString();
+        }
+        return (builder.append(hour).append(":").append(minute).append(" AM")).toString();
+    }
+
+    private static String getMonthString(int month) {
+        switch (month){
+            case 1: return "Jan";
+            case 2: return "Feb";
+            case 3: return "Mar";
+            case 4: return "Apr";
+            case 5: return "May";
+            case 6: return "Jun";
+            case 7: return "Jul";
+            case 8: return "Aug";
+            case 9: return "Sept";
+            case 10: return "Oct";
+            case 11: return "Nov";
+            case 12: return "Dec";
+            default: return "";
+        }
+    }
+
+
+
+
+//    private static long getUnixTime(String iso8601){
+//        SimpleDateFormat dateParser = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+//        long dateInMilli = 0;
+//        try {
+//            dateInMilli = dateParser.parse(iso8601).getTime();
+//        } catch (ParseException e) {
+//            Log.e(TAG, "getUnixTime: ",e );
+//        }
+//        return dateInMilli/1000;
+//    }
+//
+//    /**
+//     * Return the formatted date string (i.e. "Mar 3, 1984") from a Date object.
+//     */
+//    private static String formatDate(Date dateObject) {
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("LLL dd, yyyy");
+//        return dateFormat.format(dateObject);
+//    }
+//
+//    /**
+//     * Return the formatted date string (i.e. "4:30 PM PST") from a Date object.
+//     */
+//    private static String formatTime(Date dateObject) {
+//        SimpleDateFormat timeFormat = new SimpleDateFormat("h:mma z");
+//        return timeFormat.format(dateObject);
+//    }
 }
 

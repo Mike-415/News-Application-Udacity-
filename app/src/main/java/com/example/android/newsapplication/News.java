@@ -1,14 +1,21 @@
 package com.example.android.newsapplication;
 
 public class News {
-    private String mTitle, mSection, mDate, mAuthor, mImageUrl;
+    private String mTitle;
+    private String mSection;
+    private String mAuthor;
+    private String mImageUrl;
+    private String mGuardianUrl;
+    private String mDate;
 
-    public News(String title, String section, String date, String author, String imageUrl) {
+
+    public News(String title, String section, String date, String author, String imageUrl, String guardianUrl) {
         mTitle = title;
         mSection = section;
         mDate = date;
         mAuthor = author;
         mImageUrl = imageUrl;
+        mGuardianUrl = guardianUrl;
     }
 
     public String getTitle() {
@@ -29,6 +36,10 @@ public class News {
 
     public String getImageUrl() {
         return mImageUrl;
+    }
+
+    public String getGuardianUrl() {
+        return mGuardianUrl;
     }
 
     public boolean hasAuthor(){

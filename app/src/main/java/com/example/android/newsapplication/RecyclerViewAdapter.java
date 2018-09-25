@@ -1,6 +1,8 @@
 package com.example.android.newsapplication;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -35,21 +37,21 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        News news = mNewsList.get(i);
+        final News news = mNewsList.get(i);
         ImageView thumbnail = viewHolder.thumbnail;
         Glide.with(mContext).load(news.getImageUrl()).into(thumbnail);
         viewHolder.sectionName.setText(news.getSection());
         viewHolder.headline.setText(news.getTitle());
-        viewHolder.author.setText(news.getAuthor());
-        //TODO: Find a way to format the ISO-8610 date String
-        //TODO: If there is no image or author, replace with default image or remove textview
+        if(news.hasAuthor()){
+            viewHolder.author.setText("by "+news.getAuthor());
+        }
         viewHolder.dateAndTime.setText(news.getDate());
         viewHolder.parentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Put this onClickListener in the MainActivity with the RecyclerView
-                //TODO: Create another field in the News class for the Guardian URL
-                //TODO: Create an intent for the Guardian URL
+                Uri newsUri = Uri.parse(news.getGuardianUrl());
+                Intent websiteIntent = new Intent(Intent.ACTION_VIEW, newsUri);
+                mContext.startActivity(websiteIntent);
             }
         });
     }
@@ -73,5 +75,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             dateAndTime = itemView.findViewById(R.id.dateAndTime);
         }
     }
+
 }
 
