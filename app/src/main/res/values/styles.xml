@@ -7,5 +7,23 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+    
+    <style name="bottomSecondaryTextView">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">@dimen/secondaryFontSize</item>
+    </style>
+
+    <style name="bottomLeftSecondaryTextView" parent="bottomSecondaryTextView">
+        <item name="android:layout_gravity">start</item>
+        <item name="android:textAlignment">textStart</item>
+    </style>
+
+    <style name="bottomRightSecondaryTextView" parent="bottomSecondaryTextView">
+        <item name="android:layout_gravity">end</item>
+        <item name="android:textAlignment">textEnd</item>
+    </style>
 
 </resources>

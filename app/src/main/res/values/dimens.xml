@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dimensions for the CardView list item -->
+    <dimen name="cardViewHeight">146dp</dimen>
+    <dimen name="cardViewMargin">8dp</dimen>
+    <dimen name="imageDimensions">130dp</dimen>
+    <dimen name="headlineFontSize">20sp</dimen>
+    <dimen name="secondaryFontSize">12sp</dimen>
+    <dimen name="textViewVerticalSpace">0.8</dimen>
+    <dimen name="secondaryHalfMargin">4dp</dimen>
+
+    <!-- Dimensions for the MainActivity -->
+    <dimen name="loadingIndicatorDimensions">260dp</dimen>
+    <dimen name="loadingIndicatorElevation">1dp</dimen>
+    <dimen name="guardianLogoDimensions">180dp</dimen>
+</resources>

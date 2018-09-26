@@ -25,13 +25,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     ProgressBar mLoadingIndicator;
     @BindView(R.id.errorImageView)
     ImageView mErrorImageView;
-    private RecyclerViewAdapter mAdapter;
     @BindView(R.id.loadingIndicatorLogo)
     ImageView mLoadingIndicatorLogo;
+    private RecyclerViewAdapter mAdapter;
     private static final String TAG = "MainActivity";
     private static final String GUARDIAN_QUERY_URL = "http://content.guardianapis.com/world?show-most-viewed=true&show-fields=headline,thumbnail&show-tags=contributor&api-key=ef581bc8-daf3-4727-9d6d-67623f4f80d9";
     private static final int NEWS_LOADER_ID = 1;
-    //private View.OnClickListener listItemListener =
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mLoadingIndicatorLogo.setVisibility(View.GONE);
         if(newsList != null && !newsList.isEmpty()){
             mErrorImageView.setVisibility(View.GONE);
-            mLoadingIndicator.setVisibility(View.GONE);
+            //mLoadingIndicator.setVisibility(View.GONE);
             initializeRecyclerView(newsList);
 
         }
@@ -76,6 +75,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     }
 
+    /**
+     * Determine the internet connection
+     * @return true if internet is connected
+     */
     private boolean isInternetConnected(){
         ConnectivityManager connMgr = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -83,6 +86,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         return networkInfo != null && networkInfo.isConnected();
     }
 
+    /**
+     * Initialize the RecyclerView
+     * @param newsList represents a list of News instances
+     */
     private void initializeRecyclerView(List<News> newsList ){
         if(newsList == null)
             newsList = new ArrayList<>();
