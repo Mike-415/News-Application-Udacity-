@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             getLoaderManager().initLoader(NEWS_LOADER_ID, null, MainActivity.this);
         }else{
             mLoadingIndicator.setVisibility(View.GONE);
-            //mErrorImageView.setImageResource(R.drawable.no_internet_connection);
+            mErrorImageView.setImageResource(R.drawable.no_internet_image);
 
         }
 
@@ -56,9 +56,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(android.content.Loader<List<News>> loader, List<News> newsList) {
-        mLoadingIndicator.setVisibility(View.GONE);
+        mErrorImageView.setImageResource(R.drawable.no_news_image);
         if(newsList != null && !newsList.isEmpty()){
+            mErrorImageView.setVisibility(View.GONE);
+            mLoadingIndicator.setVisibility(View.GONE);
             initializeRecyclerView(newsList);
+
         }
 
     }

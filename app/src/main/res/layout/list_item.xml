@@ -25,7 +25,8 @@
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:scaleType="centerCrop"
-                tools:background="@color/colorAccent" />
+                tools:background="@color/colorAccent"
+                android:src="@drawable/guardian_logo"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -40,6 +41,8 @@
                     android:layout_gravity="end"
                     android:layout_weight="0.5"
                     android:textAlignment="textEnd"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:textAllCaps="true"
                     android:textSize="12sp"
                     tools:text="Section Name" />
 
@@ -67,7 +70,7 @@
                         android:layout_gravity="start"
                         android:layout_marginRight="4dp"
                         android:layout_weight="1"
-                        android:fontFamily="sans-serif-condensed"
+                        android:fontFamily="sans-serif"
                         android:textAlignment="textStart"
                         android:textSize="12sp"
                         tools:text="by SomeName SomeLastName" />
@@ -79,7 +82,7 @@
                         android:layout_gravity="end"
                         android:layout_marginLeft="4dp"
                         android:layout_weight="1"
-                        android:fontFamily="sans-serif-condensed"
+                        android:fontFamily="sans-serif"
                         android:textAlignment="textEnd"
                         android:textSize="12sp"
                         tools:text="12:00 pm September 24, 2018" />
