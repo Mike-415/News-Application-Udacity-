@@ -2,11 +2,11 @@
 <resources>
     <color name="colorPrimary">#246491</color>
     <color name="colorPrimaryDark">#1A4767</color>
-    <color name="colorAccent">#FF1744</color>
+    <color name="colorAccent">#69F0AE</color>
     <color name="lightBackground">#B3C8D9</color>
     <!-- colors for dark mode -->
-    <color name="darkModePrimary">#006064</color>
+    <color name="darkModePrimary">#37474F</color>
     <color name="darkModePrimaryDark">#263238</color>
-    <color name="darkModeColorAccent">#AE1633</color>
+    <color name="darkModeColorAccent">#2E7D32</color>
 
 </resources>

@@ -35,7 +35,7 @@ public final class QueryUtils {
     public static List<News> fetchNewsData(String requestUrl) {
         //Testing the loading indicator
         try {
-            Thread.sleep(3000);
+            Thread.sleep(30000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

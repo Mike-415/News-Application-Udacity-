@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @BindView(R.id.errorImageView)
     ImageView mErrorImageView;
     private RecyclerViewAdapter mAdapter;
+    @BindView(R.id.loadingIndicatorLogo)
+    ImageView mLoadingIndicatorLogo;
     private static final String TAG = "MainActivity";
     private static final String GUARDIAN_QUERY_URL = "http://content.guardianapis.com/world?show-most-viewed=true&show-fields=headline,thumbnail&show-tags=contributor&api-key=ef581bc8-daf3-4727-9d6d-67623f4f80d9";
     private static final int NEWS_LOADER_ID = 1;
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             Log.d(TAG, "onCreate: internetIsConnected");
             getLoaderManager().initLoader(NEWS_LOADER_ID, null, MainActivity.this);
         }else{
+            mLoadingIndicatorLogo.setVisibility(View.GONE);
             mLoadingIndicator.setVisibility(View.GONE);
             mErrorImageView.setImageResource(R.drawable.no_internet_image);
 
@@ -57,6 +60,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoadFinished(android.content.Loader<List<News>> loader, List<News> newsList) {
         mErrorImageView.setImageResource(R.drawable.no_news_image);
+        mLoadingIndicator.setVisibility(View.GONE);
+        mLoadingIndicatorLogo.setVisibility(View.GONE);
         if(newsList != null && !newsList.isEmpty()){
             mErrorImageView.setVisibility(View.GONE);
             mLoadingIndicator.setVisibility(View.GONE);
