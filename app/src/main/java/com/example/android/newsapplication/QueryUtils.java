@@ -20,10 +20,7 @@ import java.util.List;
 public final class QueryUtils {
     private static final String TAG = "QueryUtils";
 
-
-    private QueryUtils() {
-    }
-
+    private QueryUtils() { }
 
     /**
      * Query the Guardian dataset and return a list of News objects
@@ -51,8 +48,9 @@ public final class QueryUtils {
 
 
     /**
-     * Return a list of {@link News} objects that has been built up from
-     * parsing the given JSON response.
+     * Parse a JSON string, use the values to instantiate News objects, and store them into a list
+     * @param newsJSON represents a JSON string
+     * @return a list of News objects
      */
     private static List<News> extractNewsFromJson(String newsJSON) {
         if (TextUtils.isEmpty(newsJSON)) {
@@ -68,7 +66,10 @@ public final class QueryUtils {
     }
 
     /**
-     * Make an HTTP request to the given URL and return a String as the response.
+     * Make an HTTP request with the URL object and return a JSON response
+     * @param url represents a URL object
+     * @return a JSON response
+     * @throws IOException
      */
     private static String makeHttpRequest(URL url) throws IOException {
         String jsonResponse = "";
@@ -84,9 +85,6 @@ public final class QueryUtils {
             urlConnection.setConnectTimeout(15000 /* milliseconds */);
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
-
-            // If the request was successful (response code 200),
-            // then read the input stream and parse the response.
             if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 Log.i(TAG, "makeHttpRequest: Response code is 200");
                 inputStream = urlConnection.getInputStream();
@@ -101,9 +99,6 @@ public final class QueryUtils {
                 urlConnection.disconnect();
             }
             if (inputStream != null) {
-                // Closing the input stream could throw an IOException, which is why
-                // the makeHttpRequest(URL url) method signature specifies than an IOException
-                // could be thrown.
                 inputStream.close();
             }
         }
@@ -114,9 +109,13 @@ public final class QueryUtils {
 //
 //    }
 
+
+
     /**
-     * Convert the {@link InputStream} into a String which contains the
-     * whole JSON response from the server.
+     * Convert an InputStream into a JSON string
+     * @param inputStream represents an InputStream object
+     * @return A JSON string
+     * @throws IOException
      */
     private static String readFromStream(InputStream inputStream) throws IOException {
         StringBuilder output = new StringBuilder();
@@ -145,7 +144,12 @@ public final class QueryUtils {
         return url;
     }
 
-
+    /**
+     * Parses a JSON string into News objects, which are stored in a list and returned
+     * @param jsonString represents a JSON string
+     * @return A list of News objects
+     * @throws JSONException
+     */
     private static List<News> parseJSON(String jsonString) throws JSONException{
         List<News> newsList = new ArrayList<>();
         JSONObject root = new JSONObject(jsonString);
@@ -162,6 +166,12 @@ public final class QueryUtils {
     }
 
 
+    /**
+     * Parses the JSON object from the field 'result' and uses the values to construct a News object
+     * @param result represents an individual news article
+     * @return a News object created from the values within 'result'
+     * @throws JSONException
+     */
     private static News getNewsFromResult(JSONObject result) throws JSONException{
         String sectionName, title, thumbnailUrl = null, guardianUrl, author = null, date = null;
         JSONObject fields = result.getJSONObject("fields");
@@ -180,15 +190,24 @@ public final class QueryUtils {
         return new News(title, sectionName, date, author, thumbnailUrl, guardianUrl);
     }
 
-    private static String formatDateAndTime(String publicationDate){
-        String[] dateAndTime = publicationDate.split("T");
+    /**
+     * Parses the webPublicationDate String, and returns a formatted String
+     * @param webPublicationDate represents a string from the 'webPublicationDate' key
+     * @return a formatted string of the date and time
+     */
+    private static String formatDateAndTime(String webPublicationDate){
+        String[] dateAndTime = webPublicationDate.split("T");
         String formattedDate = formatDate(dateAndTime[0]);
         String formattedTime = formatTime(dateAndTime[1]);
         return formattedDate+"\n"+formattedTime;
     }
 
 
-
+    /**
+     * Parses the date portion of the webPublicationDate string and returns a formatted String
+     * @param date is the date portion of the webPublicationDate string
+     * @return a formatted date String
+     */
     private static String formatDate(String date){
         String[] dateUnits = date.split("-");
         String year = dateUnits[0];
@@ -201,6 +220,11 @@ public final class QueryUtils {
                 .append(year)).toString();
     }
 
+    /**
+     * Parses the time portion of the webPublicationDate string and returns a formatted String
+     * @param time is the time portion of the webPublicationDate string
+     * @return a formatted time String
+     */
     private static String formatTime(String time) {
         String[] timeUnits = time.split(":");
         int hour = Integer.valueOf(timeUnits[0]);
@@ -213,6 +237,11 @@ public final class QueryUtils {
         return (builder.append(hour).append(":").append(minute).append(" AM")).toString();
     }
 
+    /**
+     * Returns an abbreviated month String mapped to the month number
+     * @param month represents the month number
+     * @return an abbreviated String of the month
+     */
     private static String getMonthString(int month) {
         switch (month){
             case 1: return "Jan";
