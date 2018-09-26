@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
@@ -62,17 +64,24 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private CardView parentView;
-        private ImageView thumbnail;
-        private TextView sectionName, headline, author, dateAndTime;
+        @BindView(R.id.listItemCardView) CardView parentView;
+        @BindView(R.id.thumbnail) ImageView thumbnail;
+        @BindView(R.id.headline) TextView headline;
+        @BindView(R.id.author) TextView author;
+        @BindView(R.id.sectionName) TextView sectionName;
+        @BindView(R.id.dateAndTime) TextView dateAndTime;
+//        private CardView parentView;
+//        private ImageView thumbnail;
+//        private TextView sectionName, headline, author, dateAndTime;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            parentView = itemView.findViewById(R.id.listItemCardView);
-            thumbnail = itemView.findViewById(R.id.thumbnail);
-            sectionName = itemView.findViewById(R.id.sectionName);
-            headline = itemView.findViewById(R.id.headline);
-            author = itemView.findViewById(R.id.author);
-            dateAndTime = itemView.findViewById(R.id.dateAndTime);
+            ButterKnife.bind(this, itemView);
+//            parentView = itemView.findViewById(R.id.listItemCardView);
+//            thumbnail = itemView.findViewById(R.id.thumbnail);
+//            sectionName = itemView.findViewById(R.id.sectionName);
+//            headline = itemView.findViewById(R.id.headline);
+//            author = itemView.findViewById(R.id.author);
+//            dateAndTime = itemView.findViewById(R.id.dateAndTime);
         }
     }
 

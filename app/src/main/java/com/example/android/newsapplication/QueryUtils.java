@@ -20,22 +20,20 @@ import java.util.List;
 public final class QueryUtils {
     private static final String TAG = "QueryUtils";
 
-    /**
-     * Create a private constructor because no one should ever create a {@link QueryUtils} object.
-     * This class is only meant to hold static variables and methods, which can be accessed
-     * directly from the class name QueryUtils (and an object instance of QueryUtils is not needed).
-     */
+
     private QueryUtils() {
     }
 
 
     /**
-     * Query the USGS dataset and return a list of {@link News} objects.
+     * Query the Guardian dataset and return a list of News objects
+     * @param requestUrl represents the url and query string
+     * @return a list of News instances
      */
     public static List<News> fetchNewsData(String requestUrl) {
         //Testing the loading indicator
         try {
-            Thread.sleep(30000);
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -57,24 +55,15 @@ public final class QueryUtils {
      * parsing the given JSON response.
      */
     private static List<News> extractNewsFromJson(String newsJSON) {
-        // If the JSON string is empty or null, then return early.
         if (TextUtils.isEmpty(newsJSON)) {
             return null;
         }
         List<News> newsList = new ArrayList<>();
-
-        // Try to parse the JSON response string. If there's a problem with the way the JSON
-        // is formatted, a JSONException exception object will be thrown.
-        // Catch the exception so the app doesn't crash, and print the error message to the logs.
         try {
             newsList = parseJSON(newsJSON);
         } catch (JSONException e) {
-            // If an error is thrown when executing any of the above statements in the "try" block,
-            // catch the exception here, so the app doesn't crash. Print a log message
-            // with the message from the exception.
             Log.e("QueryUtils", "Problem parsing the earthquake JSON results", e);
         }
-        // Return the list of earthquakes
         return newsList;
     }
 
@@ -83,8 +72,6 @@ public final class QueryUtils {
      */
     private static String makeHttpRequest(URL url) throws IOException {
         String jsonResponse = "";
-
-        // If the URL is null, then return early.
         if (url == null) {
             return jsonResponse;
         }
@@ -176,14 +163,14 @@ public final class QueryUtils {
 
 
     private static News getNewsFromResult(JSONObject result) throws JSONException{
-        String sectionName, title, thumbnailUrl, guardianUrl, author = null, date = null;
+        String sectionName, title, thumbnailUrl = null, guardianUrl, author = null, date = null;
         JSONObject fields = result.getJSONObject("fields");
         sectionName = result.getString("sectionName");
         title = result.getString("webTitle");
-        if(result.has("webPublicationDate")){
+        if(result.has("webPublicationDate"))
             date = formatDateAndTime(result.getString("webPublicationDate"));
-        }
-        thumbnailUrl = fields.getString("thumbnail");
+        if(fields.has("thumbnail"))
+            thumbnailUrl = fields.getString("thumbnail");
         JSONArray tags = result.getJSONArray("tags");
         if(tags.length() > 0){
             JSONObject tagObject = tags.getJSONObject(0);
@@ -243,35 +230,5 @@ public final class QueryUtils {
             default: return "";
         }
     }
-
-
-
-
-//    private static long getUnixTime(String iso8601){
-//        SimpleDateFormat dateParser = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-//        long dateInMilli = 0;
-//        try {
-//            dateInMilli = dateParser.parse(iso8601).getTime();
-//        } catch (ParseException e) {
-//            Log.e(TAG, "getUnixTime: ",e );
-//        }
-//        return dateInMilli/1000;
-//    }
-//
-//    /**
-//     * Return the formatted date string (i.e. "Mar 3, 1984") from a Date object.
-//     */
-//    private static String formatDate(Date dateObject) {
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("LLL dd, yyyy");
-//        return dateFormat.format(dateObject);
-//    }
-//
-//    /**
-//     * Return the formatted date string (i.e. "4:30 PM PST") from a Date object.
-//     */
-//    private static String formatTime(Date dateObject) {
-//        SimpleDateFormat timeFormat = new SimpleDateFormat("h:mma z");
-//        return timeFormat.format(dateObject);
-//    }
 }
 
