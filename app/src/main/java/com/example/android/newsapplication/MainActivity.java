@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     ImageView mLoadingIndicatorLogo;
     private RecyclerViewAdapter mAdapter;
     private static final String TAG = "MainActivity";
-    private static final String GUARDIAN_QUERY_URL = "http://content.guardianapis.com/world?show-most-viewed=true&show-fields=headline,thumbnail&show-tags=contributor&api-key=ef581bc8-daf3-4727-9d6d-67623f4f80d9";
+    private static final String GUARDIAN_QUERY_URL = "http://content.guardianapis.com/world?show-most-viewed=true&show-fields=headline,thumbnail&show-tags=contributor&api-key="+BuildConfig.API_KEY;
     private static final int NEWS_LOADER_ID = 1;
 
     @Override
