@@ -29,11 +29,11 @@ public final class QueryUtils {
      */
     public static List<News> fetchNewsData(String requestUrl) {
         //Testing the loading indicator
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Thread.sleep(3000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         URL url = createUrl(requestUrl);
         String jsonResponse = null;
         try {
