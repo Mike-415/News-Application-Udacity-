@@ -69,20 +69,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         @BindView(R.id.author) TextView author;
         @BindView(R.id.sectionName) TextView sectionName;
         @BindView(R.id.dateAndTime) TextView dateAndTime;
-//        private CardView parentView;
-//        private ImageView thumbnail;
-//        private TextView sectionName, headline, author, dateAndTime;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-//            parentView = itemView.findViewById(R.id.listItemCardView);
-//            thumbnail = itemView.findViewById(R.id.thumbnail);
-//            sectionName = itemView.findViewById(R.id.sectionName);
-//            headline = itemView.findViewById(R.id.headline);
-//            author = itemView.findViewById(R.id.author);
-//            dateAndTime = itemView.findViewById(R.id.dateAndTime);
         }
     }
-
 }
 

@@ -1,3 +1,51 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">News Application</string>
+    <string name="settings_title">News Settings</string>
+    <string name="settings_menu_item">Settings</string>
+
+    <!-- Strings for Settings Activity -->
+    <!-- Strings For Category Preference [CHAR LIMIT=30] -->
+    <string name="settings_article_limit_label">Article Limit</string>
+    <string name="settings_article_limit_key" translatable="false">articleLimit</string>
+    <string name="settings_article_limit_default" translatable="false">10</string>
+
+
+    <!-- Strings For Category Preference [CHAR LIMIT=30] -->
+    <string name="settings_category_label">Category</string>
+    <string name="settings_category_key" translatable="false">category</string>
+    <string name="settings_category_default" translatable="false">world</string>
+
+    <!-- Label for Category United States option [CHAR LIMIT=20] -->
+    <string name="settings_category_world_label">World News</string>
+    <string name="settings_category_world_value">world</string>
+
+    <!-- Label for Category United States option [CHAR LIMIT=20] -->
+    <string name="settings_category_us_label">United States</string>
+    <string name="settings_category_us_value">us</string>
+
+    <!-- Label for Category Business option [CHAR LIMIT=20] -->
+    <string name="settings_category_business_label">Business</string>
+    <string name="settings_category_business_value">business</string>
+
+
+    <!-- Label for Category Technology option [CHAR LIMIT=20] -->
+    <string name="settings_category_technology_label">Technology</string>
+    <string name="settings_category_technology_value">technology</string>
+
+    <!-- Label for Category sports option [CHAR LIMIT=20] -->
+    <string name="settings_category_sports_label">Sports</string>
+    <string name="settings_category_sports_value">sport</string>
+
+    <!-- Label for Category Science option [CHAR LIMIT=20] -->
+    <string name="settings_category_science_label">Science</string>
+    <string name="settings_category_science_value">science</string>
+
+    <!-- Label for Category Music option [CHAR LIMIT=20] -->
+    <string name="settings_category_music_label">Music</string>
+    <string name="settings_category_music_value">music</string>
+
+    <!-- Label for Category Film option [CHAR LIMIT=20] -->
+    <string name="settings_category_film_label">Film</string>
+    <string name="settings_category_film_value">film</string>
+
 </resources>
