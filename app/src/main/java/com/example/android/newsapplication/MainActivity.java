@@ -2,9 +2,12 @@ package com.example.android.newsapplication;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.app.LoaderManager;
+import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -34,7 +37,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private RecyclerViewAdapter mAdapter;
     private static final String TAG = "MainActivity";
     //private static final String GUARDIAN_QUERY_URL = "http://content.guardianapis.com/world?show-most-viewed=true&show-fields=headline,thumbnail&show-tags=contributor&api-key="+BuildConfig.API_KEY;
-    private static final String GUARDIAN_QUERY_URL = "http://content.guardianapis.com/world?show-most-viewed=true&show-fields=headline,thumbnail&show-tags=contributor&api-key="+BuildConfig.API_KEY;
+    private static final String GUARDIAN_API_URL = "http://content.guardianapis.com/search";
+
     private static final int NEWS_LOADER_ID = 1;
 
     @Override
@@ -58,7 +62,18 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public android.content.Loader<List<News>> onCreateLoader(int id, Bundle args) {
-        return new NewsLoader(MainActivity.this, GUARDIAN_QUERY_URL);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        String defautArticleNumber = sharedPref.getString(
+                getString(R.string.settings_article_limit_key),
+                getString(R.string.settings_article_limit_default)
+                );
+        Uri baseUri = Uri.parse(GUARDIAN_API_URL);
+        Uri.Builder uriBuilder = baseUri.buildUpon();
+        uriBuilder.appendQueryParameter("page-size", defautArticleNumber);
+        uriBuilder.appendQueryParameter("show-fields", "headline,thumbnail");
+        uriBuilder.appendQueryParameter("show-tags", "contributor");
+        uriBuilder.appendQueryParameter("api-key", BuildConfig.API_KEY);
+        return new NewsLoader(MainActivity.this, uriBuilder.toString());
     }
 
     @Override

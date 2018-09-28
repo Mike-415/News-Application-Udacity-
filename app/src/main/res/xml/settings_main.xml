@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/settings_title">
+    <!-- Number of articles -->
+    <EditTextPreference
+        android:defaultValue="@string/settings_article_limit_default"
+        android:inputType="numberDecimal"
+        android:selectAllOnFocus="true"
+        android:title="@string/settings_article_limit_label"/>
+    <!-- Category -->
+    <ListPreference
+        android:defaultValue="@string/settings_category_default"
+        android:entries="@array/settings_category_labels"
+        android:entryValues="@array/settings_category_values"
+        android:key="@string/settings_category_key"
+        android:title="@string/settings_category_label"/>
 </PreferenceScreen>
